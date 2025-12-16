@@ -1,0 +1,48 @@
+# Archivos de configuración de Visual Studio
+*.user
+*.suo
+*.sln.user
+
+# Directorios de compilación y salida
+bin/
+obj/
+
+# Archivos temporales y de usuario
+*.tmp
+*.bak
+*.log
+
+# Paquetes y dependencias
+packages/
+.vs/
+
+# Archivos generados por el IDE/Editor (VS Code, Rider, etc.)
+.vscode/
+.idea/
+
+# Archivos de generación de código (si aplica, como modelos EF)
+# Models/
+# Contexts/
+
+# Archivos de despliegue (si no los versionas)
+# bin/Release/
+# bin/Debug/
+
+# Archivos de resultados de pruebas
+# TestResults/
+
+# Archivos de configuración de entorno (ej. variables de entorno)
+# .env
+
+# Archivos de Azure/Docker (si no son necesarios versionar)
+# Dockerfile
+# docker-compose.yml
+
+# Archivos específicos de .NET Core / .NET 5+
+# Archivos de publicación (si no se versionan)
+# publish/
+
+# Archivos de compilación
+*.dll
+*.exe
+*.pdb
