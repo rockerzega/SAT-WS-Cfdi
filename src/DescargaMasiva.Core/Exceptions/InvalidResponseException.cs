@@ -1,4 +1,4 @@
-namespace DescargaMasiva.DescargaMasiva.Domain.Exceptions;
+namespace DescargaMasiva.DescargaMasiva.Core.Exceptions;
 
 public sealed class InvalidResponseContentException(string message, string content)
   : Exception($"{DefaultMessage} Message: {message} Content: {content}")
