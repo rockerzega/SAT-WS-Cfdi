@@ -1,9 +1,9 @@
-namespace DescargaMasiva.DescargaMasiva.Core.Exceptions;
+namespace DescargaMasiva.DescargaMasiva.Domain.Exceptions;
 
 public sealed class InvalidResponseContentException(string message, string content)
   : Exception($"{DefaultMessage} Message: {message} Content: {content}")
 {
-  private static readonly string DefaultMessage = "Response content is not in a valid format.";
+  private static readonly string DefaultMessage = "La respuesta no tiene un formato válido.";
 
   public string Content { get; } = content;
 }

@@ -1,6 +1,6 @@
 using Ardalis.SmartEnum;
 
-namespace DescargaMasiva.DescargaMasiva.Application.Enumerations;
+namespace DescargaMasiva.DescargaMasiva.Domain.Enums;
 
 public class StatusQuery: SmartEnum<StatusQuery>
 {

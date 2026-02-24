@@ -1,6 +1,6 @@
-﻿using DescargaMasiva.DescargaMasiva.Core.Entities;
+﻿using DescargaMasiva.DescargaMasiva.Domain.Entities;
 
-namespace DescargaMasiva.DescargaMasiva.Core.Interfaces;
+namespace DescargaMasiva.DescargaMasiva.Application.Interfaces;
 
 public interface IHttpSoapClient
 {

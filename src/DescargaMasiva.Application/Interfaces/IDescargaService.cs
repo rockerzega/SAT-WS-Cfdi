@@ -1,8 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
-using ARSoftware.Cfdi.DescargaMasiva.Models;
-using DescargaMasiva.DescargaMasiva.Core.Entities;
+using DescargaMasiva.DescargaMasiva.Domain.Entities;
 
-namespace DescargaMasiva.DescargaMasiva.Core.Interfaces;
+namespace DescargaMasiva.DescargaMasiva.Application.Interfaces;
 
     /// <summary>
     ///     Servicio para mandar peticiones de verificacion al web service de descarga masiva de CFDIs del SAT

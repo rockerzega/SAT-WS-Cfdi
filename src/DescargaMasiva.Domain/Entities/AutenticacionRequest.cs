@@ -1,5 +1,5 @@
 ﻿
-namespace DescargaMasiva.DescargaMasiva.Core.Entities;
+namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 
 /// <summary>
 ///     Peticion de autenticacion.

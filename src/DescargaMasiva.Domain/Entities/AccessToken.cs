@@ -2,7 +2,7 @@
 using DescargaMasiva.DescargaMasiva.Application.Helpers;
 
 
-namespace DescargaMasiva.DescargaMasiva.Core.Entities;
+namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 
 /// <summary>
 ///     Token de autorizacion para autenticar peticiones con el web service de descarga masiva de CFDIs del SAT

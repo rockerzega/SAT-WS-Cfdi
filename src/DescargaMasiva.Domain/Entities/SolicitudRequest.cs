@@ -1,6 +1,6 @@
-﻿using DescargaMasiva.DescargaMasiva.Application.Enumerations;
+﻿using DescargaMasiva.DescargaMasiva.Domain.Enums;
 
-namespace DescargaMasiva.DescargaMasiva.Core.Entities;
+namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 
 /// <summary>
 ///     Peticion de solicitud.
@@ -112,84 +112,89 @@ public sealed class SolicitudRequest
     ///     Parámetro obligatorio. En caso de utilizarse este parámetro no deben declararse los siguientes criterios de
     ///     búsqueda: FechaInicial, FechaFinal, RfcEmisor y RfcSolicitante.
     /// </summary>
-    public string Uuid { get; }
+  public string Uuid { get; }
 
-    public bool HasDocumentType => DocumentType != TypeCfdi.Null;
-    public bool HasDocumentStatus => DocumentStatus != StatusCfdi.Null;
-    public bool HasComplement => !string.IsNullOrWhiteSpace(Complement);
-    public bool HasUuid => !string.IsNullOrWhiteSpace(Uuid);
-    public bool HasThirdPartyRfc => !string.IsNullOrWhiteSpace(ThirdPartyRfc);
+  public bool HasDocumentType => DocumentType != TypeCfdi.Null;
+  public bool HasDocumentStatus => DocumentStatus != StatusCfdi.Null;
+  public bool HasComplement => !string.IsNullOrWhiteSpace(Complement);
+  public bool HasUuid => !string.IsNullOrWhiteSpace(Uuid);
+  public bool HasThirdPartyRfc => !string.IsNullOrWhiteSpace(ThirdPartyRfc);
 
-    public static SolicitudRequest CreateInstance(DateTime startDate,
-                                                  DateTime endDate,
-                                                  QueryType requestType,
-                                                  string senderRfc,
-                                                  IEnumerable<string> recipientsRfcs,
-                                                  string requestingRfc,
-                                                  AccessToken accessToken,
-                                                  TypeCfdi documentType,
-                                                  StatusCfdi documentStatus,
-                                                  string thirdPartyRfc,
-                                                  string complement,
-                                                  string uuid)
-    {
-        List<string> recipients = recipientsRfcs.ToList();
-        if (recipients.Any() && recipients.Count > 5)
-            throw new ArgumentOutOfRangeException(nameof(RecipientsRfcs), "There can only be a maximum of 5 recipient RFC.");
+  public static SolicitudRequest CreateInstance(DateTime startDate,
+                                                DateTime endDate,
+                                                QueryType requestType,
+                                                string senderRfc,
+                                                IEnumerable<string> recipientsRfcs,
+                                                string requestingRfc,
+                                                AccessToken accessToken,
+                                                TypeCfdi documentType,
+                                                StatusCfdi documentStatus,
+                                                string thirdPartyRfc,
+                                                string complement,
+                                                string uuid)
+  {
+    List<string> recipients = recipientsRfcs.ToList();
+    if (recipients.Any() && recipients.Count > 5)
+      throw new ArgumentOutOfRangeException(nameof(RecipientsRfcs), "There can only be a maximum of 5 recipient RFC.");
 
-        return new SolicitudRequest(startDate,
-            endDate,
-            requestType,
-            senderRfc,
-            recipients,
-            requestingRfc,
-            accessToken,
-            documentType,
-            documentStatus,
-            thirdPartyRfc,
-            complement,
-            uuid);
-    }
+    return new SolicitudRequest(
+      startDate,
+      endDate,
+      requestType,
+      senderRfc,
+      recipients,
+      requestingRfc,
+      accessToken,
+      documentType,
+      documentStatus,
+      thirdPartyRfc,
+      complement,
+      uuid
+    );
+  }
 
-    public static SolicitudRequest CreateInstance(DateTime startDate,
-                                                  DateTime endDate,
-                                                  QueryType requestType,
-                                                  string senderRfc,
-                                                  IEnumerable<string> recipientsRfcs,
-                                                  string requestingRfc,
-                                                  AccessToken accessToken)
-    {
-        List<string> recipients = recipientsRfcs.ToList();
-        if (recipients.Any() && recipients.Count > 5)
-            throw new ArgumentOutOfRangeException(nameof(RecipientsRfcs), "There can only be a maximum of 5 recipient RFC.");
+  public static SolicitudRequest CreateInstance(DateTime startDate,
+                                                DateTime endDate,
+                                                QueryType requestType,
+                                                string senderRfc,
+                                                IEnumerable<string> recipientsRfcs,
+                                                string requestingRfc,
+                                                AccessToken accessToken)
+  {
+    List<string> recipients = recipientsRfcs.ToList();
+    if (recipients.Any() && recipients.Count > 5)
+      throw new ArgumentOutOfRangeException(nameof(RecipientsRfcs), "There can only be a maximum of 5 recipient RFC.");
 
-        return new SolicitudRequest(startDate,
-            endDate,
-            requestType,
-            senderRfc,
-            recipients,
-            requestingRfc,
-            accessToken,
-            TypeCfdi.Null,
-            StatusCfdi.Null,
-            string.Empty,
-            string.Empty,
-            string.Empty);
-    }
+    return new SolicitudRequest(
+      startDate,
+      endDate,
+      requestType,
+      senderRfc,
+      recipients,
+      requestingRfc,
+      accessToken,
+      TypeCfdi.Null,
+      StatusCfdi.Null,
+      string.Empty,
+      string.Empty,
+      string.Empty
+    );
+  }
 
-    public static SolicitudRequest CreateInstance(string uuid, string requestingRfc, AccessToken accessToken)
-    {
-        return new SolicitudRequest(DateTime.MinValue,
-            DateTime.MinValue,
-            QueryType.Cfdi,
-            "",
-            Enumerable.Empty<string>(),
-            requestingRfc,
-            accessToken,
-            TypeCfdi.Null,
-            StatusCfdi.Null,
-            string.Empty,
-            string.Empty,
-            uuid);
-    }
+  public static SolicitudRequest CreateInstance(string uuid, string requestingRfc, AccessToken accessToken)
+  {
+    return new SolicitudRequest(DateTime.MinValue,
+      DateTime.MinValue,
+      QueryType.Cfdi,
+      "",
+      Enumerable.Empty<string>(),
+      requestingRfc,
+      accessToken,
+      TypeCfdi.Null,
+      StatusCfdi.Null,
+      string.Empty,
+      string.Empty,
+      uuid
+    );
+  }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace DescargaMasiva.DescargaMasiva.Core.Entities;
+namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 
 /// <summary>
 ///     Resultado de la peticion de solicitud.
