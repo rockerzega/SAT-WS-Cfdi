@@ -1,6 +1,6 @@
 ﻿using DescargaMasiva.DescargaMasiva.Domain.Entities;
 
-namespace DescargaMasiva.DescargaMasiva.Application.Interfaces;
+namespace DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
 
 public interface IHttpSoapClient
 {
@@ -10,4 +10,3 @@ public interface IHttpSoapClient
                                            string requestContent,
                                            CancellationToken cancellationToken);
 }
-

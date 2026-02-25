@@ -1,10 +1,10 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
-using DescargaMasiva.DescargaMasiva.Core.Entities;
-using DescargaMasiva.DescargaMasiva.Core.Interfaces;
+using DescargaMasiva.DescargaMasiva.Domain.Entities;
+using DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
 
-namespace DescargaMasiva.DescargaMasiva.Application.Services;
+namespace DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 
 public sealed class HttpSoapClient(HttpClient httpClient) : IHttpSoapClient
 {

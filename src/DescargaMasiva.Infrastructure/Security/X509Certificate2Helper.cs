@@ -1,6 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 
-namespace DescargaMasiva.DescargaMasiva.Adapters;
+namespace DescargaMasiva.DescargaMasiva.Infrastructure.Security;
 
 public class X509Certificate2Helper
 {

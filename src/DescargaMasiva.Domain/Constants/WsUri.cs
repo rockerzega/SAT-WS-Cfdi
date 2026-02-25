@@ -1,6 +1,6 @@
 namespace DescargaMasiva.DescargaMasiva.Domain.Constants;
 
-public static class CfdiDescargaMasivaWsUri
+public static class WsUri
 {
   public const string AuthUri = "https://cfdidescargamasivasolicitud.clouda.sat.gob.mx/Autenticacion/Autenticacion.svc";
   public const string AuthSoapActionUri = "http://DescargaMasivaTerceros.gob.mx/IAutenticacion/Autentica";

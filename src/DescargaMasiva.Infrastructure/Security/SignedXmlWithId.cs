@@ -1,7 +1,7 @@
 using System.Security.Cryptography.Xml;
 using System.Xml;
 using DescargaMasiva.DescargaMasiva.Domain.Constants;
-namespace DescargaMasiva.DescargaMasiva.Infrastructure.Adapters.Soap;
+namespace DescargaMasiva.DescargaMasiva.Infrastructure.Security;
 
 internal sealed class SignedXmlWithId : SignedXml
 {
@@ -21,7 +21,7 @@ internal sealed class SignedXmlWithId : SignedXml
     if (idElem is null)
     {
       var nsManager = new XmlNamespaceManager(doc.NameTable);
-      nsManager.AddNamespace(CfdiDescargaMasivaWsNamespaces.WsuPrefix, CfdiDescargaMasivaWsNamespaces.WsuNamespaceUrl);
+      nsManager.AddNamespace(CfdiDescargaMasivaNamespaces.WsuPrefix, CfdiDescargaMasivaNamespaces.WsuNamespaceUrl);
 
       idElem = doc.SelectSingleNode("//*[@wsu:Id=\"" + id + "\"]", nsManager) as XmlElement;
     }

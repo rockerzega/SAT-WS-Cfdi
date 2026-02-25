@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="src\DescargaMasiva.Application\Services\" />
-    <Folder Include="src\DescargaMasiva.Core\Entities\" />
+    <Folder Include="src\DescargaMasiva.Application\" />
+    <Folder Include="src\DescargaMasiva.Domain\" />
   </ItemGroup>
 
 </Project>

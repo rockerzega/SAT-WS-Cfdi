@@ -1,5 +1,5 @@
 ﻿using System.Web;
-using DescargaMasiva.DescargaMasiva.Application.Helpers;
+using DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 
 
 namespace DescargaMasiva.DescargaMasiva.Domain.Entities;

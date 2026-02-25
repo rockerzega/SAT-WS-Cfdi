@@ -1,5 +1,5 @@
 using System.Xml;
-namespace DescargaMasiva.DescargaMasiva.Application.Ports.Out;
+namespace DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
 
 public interface IXmlRequestSigner
 {

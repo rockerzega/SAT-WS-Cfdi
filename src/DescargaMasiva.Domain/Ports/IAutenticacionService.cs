@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using DescargaMasiva.DescargaMasiva.Domain.Entities;
 
-namespace DescargaMasiva.DescargaMasiva.Application.Interfaces;
+namespace DescargaMasiva.DescargaMasiva.Domain.Ports;
 /// <summary>
 ///     Servicio para mandar peticiones de autenticacion al web service de descarga masiva de CFDIs del SAT
 /// </summary>

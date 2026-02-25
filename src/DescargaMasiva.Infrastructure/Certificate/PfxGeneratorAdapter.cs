@@ -1,4 +1,4 @@
-using DescargaMasiva.DescargaMasiva.Application.Ports.Out;
+using DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Cms;
@@ -6,7 +6,7 @@ using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
 using Org.BouncyCastle.Asn1;
 
-namespace DescargaMasiva.DescargaMasiva.Adapters;
+namespace DescargaMasiva.DescargaMasiva.Infrastructure.Certificate;
 
 public class PfxGeneratorAdapter: IPfxGenerator
 {

@@ -1,11 +1,11 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
-using DescargaMasiva.DescargaMasiva.Application.Ports.Out;
 using System.Xml;
+using DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
 
-namespace DescargaMasiva.DescargaMasiva.Infrastructure.Adapters.Soap;
+namespace DescargaMasiva.DescargaMasiva.Infrastructure.Security;
 
-public class XmlSignedAdapter : IXmlRequestSigner
+public class SignedXmlAdapter : IXmlRequestSigner
 {
   public XmlElement SignRequest(XmlElement xml, byte[] pfx, string password)
   {

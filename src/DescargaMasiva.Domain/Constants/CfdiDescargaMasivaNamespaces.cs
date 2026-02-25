@@ -1,6 +1,6 @@
 namespace DescargaMasiva.DescargaMasiva.Domain.Constants;
 
-public static class CfdiDescargaMasivaWsNamespaces
+public static class CfdiDescargaMasivaNamespaces
 {
   /// <summary>
   ///     URL= http://www.w3.org/2000/09/xmldsig#
