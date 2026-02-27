@@ -6,9 +6,9 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 /// <summary>
 ///     Resultado de la peticion de descarga.
 /// </summary>
-public sealed class DescargaResult
+public sealed class DownloadResult
 {
-    private DescargaResult(string package,
+    private DownloadResult(string package,
                            string requestStatusCode,
                            string requestStatusMessage,
                            HttpStatusCode httpStatusCode,
@@ -46,12 +46,12 @@ public sealed class DescargaResult
     /// </summary>
     public string ResponseContent { get; }
 
-    public static DescargaResult CreateInstance(string package,
+    public static DownloadResult CreateInstance(string package,
                                                 string requestStatusCode,
                                                 string requestStatusMessage,
                                                 HttpStatusCode httpStatusCode,
                                                 string responseContent)
     {
-        return new DescargaResult(package, requestStatusCode, requestStatusMessage, httpStatusCode, responseContent);
+        return new DownloadResult(package, requestStatusCode, requestStatusMessage, httpStatusCode, responseContent);
     }
 }

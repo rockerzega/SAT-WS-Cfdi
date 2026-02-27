@@ -1,20 +1,20 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using DescargaMasiva.DescargaMasiva.Domain.Entities;
 
-namespace DescargaMasiva.DescargaMasiva.Application.Interfaces;
+namespace DescargaMasiva.DescargaMasiva.Domain.Ports;
 
 /// <summary>
 ///     Servicio para mandar peticiones de verificacion al web service de descarga masiva de CFDIs del SAT
 /// </summary>
-public interface IVerificacionService
+public interface IVerifyService
 {
   /// <summary>
   ///     Genera el contenido para la peticion SOAP enviada al web service
   /// </summary>
-  /// <param name="verificacionRequest">Peticion</param>
+  /// <param name="verifyRequest">Peticion</param>
   /// <param name="certificate">Certificado del SAT (.pfx)</param>
   /// <returns>El contenido para la peticion SOAP</returns>
-  string GenerateSoapRequestEnvelopeXmlContent(VerificacionRequest verificacionRequest, X509Certificate2 certificate);
+  string GenerateSoapRequestEnvelopeXmlContent(VerifyRequest verifyRequest, X509Certificate2 certificate);
 
   /// <summary>
   ///     Envia la peticion al web service de descarga masiva de CFDIs del SAT.
@@ -29,11 +29,11 @@ public interface IVerificacionService
   /// <summary>
   ///     Envia la peticion al web service de descarga masiva de CFDIs del SAT.
   /// </summary>
-  /// <param name="verificacionRequest">Peicion</param>
+  /// <param name="verifyRequest">Peicion</param>
   /// <param name="certificate">Certificado SAT (.pfx)</param>
   /// <param name="cancellationToken">Token de cancelacion</param>
   /// <returns>El resultado de la peticion.</returns>
-  Task<VerificacionResult> SendSoapRequestAsync(VerificacionRequest verificacionRequest,
+  Task<VerifyResult> SendSoapRequestAsync(VerifyRequest verifyRequest,
                                                 X509Certificate2 certificate,
                                                 CancellationToken cancellationToken);
 
@@ -42,5 +42,5 @@ public interface IVerificacionService
   /// </summary>
   /// <param name="soapRequestResult">Resultado SOAP</param>
   /// <returns>Resultado de la peticion</returns>
-  VerificacionResult GetSoapResponseResult(SoapRequestResult soapRequestResult);
+  VerifyResult GetSoapResponseResult(SoapRequestResult soapRequestResult);
 }

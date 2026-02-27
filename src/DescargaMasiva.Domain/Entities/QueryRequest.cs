@@ -5,9 +5,9 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 /// <summary>
 ///     Peticion de solicitud.
 /// </summary>
-public sealed class SolicitudRequest
+public sealed class QueryRequest
 {
-    private SolicitudRequest(DateTime startDate,
+    private QueryRequest(DateTime startDate,
                              DateTime endDate,
                              QueryType requestType,
                              string senderRfc,
@@ -120,7 +120,7 @@ public sealed class SolicitudRequest
   public bool HasUuid => !string.IsNullOrWhiteSpace(Uuid);
   public bool HasThirdPartyRfc => !string.IsNullOrWhiteSpace(ThirdPartyRfc);
 
-  public static SolicitudRequest CreateInstance(DateTime startDate,
+  public static QueryRequest CreateInstance(DateTime startDate,
                                                 DateTime endDate,
                                                 QueryType requestType,
                                                 string senderRfc,
@@ -137,7 +137,7 @@ public sealed class SolicitudRequest
     if (recipients.Any() && recipients.Count > 5)
       throw new ArgumentOutOfRangeException(nameof(RecipientsRfcs), "There can only be a maximum of 5 recipient RFC.");
 
-    return new SolicitudRequest(
+    return new QueryRequest(
       startDate,
       endDate,
       requestType,
@@ -153,7 +153,7 @@ public sealed class SolicitudRequest
     );
   }
 
-  public static SolicitudRequest CreateInstance(DateTime startDate,
+  public static QueryRequest CreateInstance(DateTime startDate,
                                                 DateTime endDate,
                                                 QueryType requestType,
                                                 string senderRfc,
@@ -165,7 +165,7 @@ public sealed class SolicitudRequest
     if (recipients.Any() && recipients.Count > 5)
       throw new ArgumentOutOfRangeException(nameof(RecipientsRfcs), "There can only be a maximum of 5 recipient RFC.");
 
-    return new SolicitudRequest(
+    return new QueryRequest(
       startDate,
       endDate,
       requestType,
@@ -181,9 +181,9 @@ public sealed class SolicitudRequest
     );
   }
 
-  public static SolicitudRequest CreateInstance(string uuid, string requestingRfc, AccessToken accessToken)
+  public static QueryRequest CreateInstance(string uuid, string requestingRfc, AccessToken accessToken)
   {
-    return new SolicitudRequest(DateTime.MinValue,
+    return new QueryRequest(DateTime.MinValue,
       DateTime.MinValue,
       QueryType.Cfdi,
       "",

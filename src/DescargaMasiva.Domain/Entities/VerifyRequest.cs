@@ -5,9 +5,9 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 /// <summary>
 ///     Peticion de verificacion.
 /// </summary>
-public sealed class VerificacionRequest
+public sealed class VerifyRequest
 {
-  private VerificacionRequest(string requestId, string requestingRfc, AccessToken accessToken)
+  private VerifyRequest(string requestId, string requestingRfc, AccessToken accessToken)
   {
     RequestId = requestId ?? throw new ArgumentNullException(nameof(requestId));
     RequestingRfc = requestingRfc ?? throw new ArgumentNullException(nameof(requestingRfc));
@@ -29,9 +29,9 @@ public sealed class VerificacionRequest
   /// </summary>
   public AccessToken AccessToken { get; }
 
-  public static VerificacionRequest CreateInstance(string requestId, string requestingRfc, AccessToken accessToken)
+  public static VerifyRequest CreateInstance(string requestId, string requestingRfc, AccessToken accessToken)
   {
-    return new VerificacionRequest(requestId, requestingRfc, accessToken);
+    return new VerifyRequest(requestId, requestingRfc, accessToken);
   }
 }
 

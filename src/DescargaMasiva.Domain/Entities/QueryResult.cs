@@ -6,9 +6,9 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 /// <summary>
 ///     Resultado de la peticion de solicitud.
 /// </summary>
-public sealed class SolicitudResult
+public sealed class QueryResult
 {
-  private SolicitudResult(string requestId,
+  private QueryResult(string requestId,
                         string requestStatusCode,
                         string requestStatusMessage,
                         HttpStatusCode httpStatusCode,
@@ -47,12 +47,12 @@ public sealed class SolicitudResult
   /// </summary>
   public string ResponseContent { get; }
 
-  public static SolicitudResult CreateInstance(string requestId,
+  public static QueryResult CreateInstance(string requestId,
                                              string requestStatusCode,
                                              string requestStatusMessage,
                                              HttpStatusCode httpStatusCode,
                                              string responseContent)
   {
-    return new SolicitudResult(requestId, requestStatusCode, requestStatusMessage, httpStatusCode, responseContent);
+    return new QueryResult(requestId, requestStatusCode, requestStatusMessage, httpStatusCode, responseContent);
   }
 }
