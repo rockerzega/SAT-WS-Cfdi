@@ -33,7 +33,7 @@ public interface IVerifyService
   /// <param name="certificate">Certificado SAT (.pfx)</param>
   /// <param name="cancellationToken">Token de cancelacion</param>
   /// <returns>El resultado de la peticion.</returns>
-  Task<VerifyResult> SendSoapRequestAsync(VerifyRequest verifyRequest,
+  Task<Result<VerifyData>> SendSoapRequestAsync(VerifyRequest verifyRequest,
                                                 X509Certificate2 certificate,
                                                 CancellationToken cancellationToken);
 
@@ -42,5 +42,5 @@ public interface IVerifyService
   /// </summary>
   /// <param name="soapRequestResult">Resultado SOAP</param>
   /// <returns>Resultado de la peticion</returns>
-  VerifyResult GetSoapResponseResult(SoapRequestResult soapRequestResult);
+  Result<VerifyData> GetSoapResponseResult(SoapRequestResult soapRequestResult);
 }

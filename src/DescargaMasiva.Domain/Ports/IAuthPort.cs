@@ -10,7 +10,7 @@ public interface IAuthPort
   /// <param name="request">Petición</param>
   /// <param name="cancellationToken">Certificado Sat (.pfx)</param>
   /// <returns></returns>
-  Task<AuthResult> AuthenticateAsync(
+  Task<Result<AccessToken>> ExecuteAsync(
     AuthRequest request,
     CancellationToken cancellationToken = default);
 }

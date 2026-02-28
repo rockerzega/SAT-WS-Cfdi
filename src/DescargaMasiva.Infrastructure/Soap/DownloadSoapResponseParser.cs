@@ -5,9 +5,9 @@ using DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
 
 namespace DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 
-public class DownloadSoapResponseParser : ISoapResponseParser<DownloadResult>
+public class DownloadSoapResponseParser : ISoapResponseParser<Result<DownloadData>>
 {
-  public DownloadResult Parse(SoapRequestResult soapRequestResult)
+  public Result<DownloadData> Parse(SoapRequestResult soapRequestResult)
   {
     var xmlDocument = new XmlDocument();
     xmlDocument.LoadXml(soapRequestResult.ResponseContent);
@@ -28,12 +28,11 @@ public class DownloadSoapResponseParser : ISoapResponseParser<DownloadResult>
 
     string requestStatusCode = element.Attributes.GetNamedItem("CodEstatus")?.Value ?? string.Empty;
     string requestStatusMessage = element.Attributes.GetNamedItem("Mensaje")?.Value ?? string.Empty;
-
-    return DownloadResult.CreateInstance(
+    var data = new DownloadData(
       package,
       requestStatusCode,
-      requestStatusMessage,
-      soapRequestResult.HttpStatusCode,
-      soapRequestResult.ResponseContent);
+      requestStatusMessage
+    );
+    return Result<DownloadData>.Success(data);
   }
 }

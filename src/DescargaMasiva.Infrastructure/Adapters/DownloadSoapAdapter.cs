@@ -7,12 +7,12 @@ using DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 namespace DescargaMasiva.DescargaMasiva.Infrastructure.Adapters;
 
 public sealed class DownloadSoapAdapter
-  : BaseSoapAdapter<DownloadRequest, DownloadResult>, IDownloadPort
+  : BaseSoapAdapter<DownloadRequest, Result<DownloadData>>, IDownloadPort
 {
   public DownloadSoapAdapter(
     IHttpSoapClient httpSoapClient,
     ISoapEnvelopeBuilder<DownloadRequest> builder,
-    ISoapResponseParser<DownloadResult> parser)
+    ISoapResponseParser<Result<DownloadData>> parser)
     : base(
       httpSoapClient,
       builder,
@@ -21,7 +21,7 @@ public sealed class DownloadSoapAdapter
   {
   }
 
-  public Task<DownloadResult> ExecuteAsync(
+  public Task<Result<DownloadData>> ExecuteAsync(
     DownloadRequest request,
     CancellationToken cancellationToken = default)
   {

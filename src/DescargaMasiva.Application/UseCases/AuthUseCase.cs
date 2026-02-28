@@ -12,12 +12,12 @@ public class AuthUseCase
     _authPort = authPort;
   }
 
-  public async Task<AuthResult> ExecuteAsync(
+  public async Task<Result<AccessToken>> ExecuteAsync(
     CancellationToken cancellationToken = default)
   {
     // Aquí decides cómo crear la petición
     var authRequest = AuthRequest.CreateInstance();
 
-    return await _authPort.AuthenticateAsync(authRequest, cancellationToken);
+    return await _authPort.ExecuteAsync(authRequest, cancellationToken);
   }
 }

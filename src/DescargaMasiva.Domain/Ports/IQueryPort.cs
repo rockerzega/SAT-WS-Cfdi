@@ -4,7 +4,7 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Ports;
 
 public interface IQueryPort
 {
-  Task<QueryResult> ExecuteAsync(
+  Task<Result<QueryData>> ExecuteAsync(
     QueryRequest request,
     CancellationToken cancellationToken = default);
 }

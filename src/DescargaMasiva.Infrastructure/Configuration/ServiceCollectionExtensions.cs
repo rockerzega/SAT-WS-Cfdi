@@ -1,5 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 using DescargaMasiva.DescargaMasiva.Application.UseCases;
+using DescargaMasiva.DescargaMasiva.Domain.Entities;
 using DescargaMasiva.DescargaMasiva.Domain.Ports;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Adapters;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Http;
@@ -28,21 +29,66 @@ public static class ServiceCollectionExtensions
     // 2️⃣ Registrar HttpSoapClient
     services.AddHttpClient<IHttpSoapClient, HttpSoapClient>();
 
-    // 3️⃣ Registrar IAuth
-    services.AddScoped<IAuthSoapEnvelopeBuilder, AuthSoapEnvelopeBuilder>();
-    services.AddScoped<IAuthSoapResponseParser, AuthSoapResponseParser>();
+    // =========================
+    // AUTH
+    // =========================
 
-    // 4️⃣ Registrar Adapter
+    services.AddScoped<
+      ISoapEnvelopeBuilder<AuthRequest>,
+      AuthSoapEnvelopeBuilder>();
+
+    services.AddScoped<
+      ISoapResponseParser<Result<AccessToken>>,
+      AuthSoapResponseParser>();
+
     services.AddScoped<IAuthPort, AuthSoapAdapter>();
-
-    // 5️⃣ Registrar UseCase
     services.AddScoped<AuthUseCase>();
+
+    // =========================
+    // QUERY
+    // =========================    
     
-    services.AddScoped<IDownloadSoapEnvelopeBuilder, DownloadSoapEnvelopeBuilder>();
-    services.AddScoped<IDownloadSoapResponseParser, DownloadSoapResponseParser>();
+    services.AddScoped<
+      ISoapEnvelopeBuilder<QueryRequest>,
+      QuerySoapEnvelopeBuilder>();
+
+    services.AddScoped<
+      ISoapResponseParser<Result<QueryData>>,
+      QuerySoapResponseParser>();
+
+    services.AddScoped<IQueryPort, QuerySoapAdapter>();
+    services.AddScoped<QueryUseCase>();
+    
+    // =========================
+    // VERIFY
+    // =========================    
+    
+    services.AddScoped<
+      ISoapEnvelopeBuilder<VerifyRequest>,
+      VerifySoapEnvelopeBuilder>();
+
+    services.AddScoped<
+      ISoapResponseParser<Result<VerifyData>>,
+      VerifySoapResponseParser>();
+
+    services.AddScoped<IVerifyPort, VerifySoapAdapter>();
+    services.AddScoped<VerifyUseCase>();
+    
+    // =========================
+    // DOWNLOAD
+    // =========================
+
+    services.AddScoped<
+      ISoapEnvelopeBuilder<DownloadRequest>,
+      DownloadSoapEnvelopeBuilder>();
+
+    services.AddScoped<
+      ISoapResponseParser<Result<DownloadData>>,
+      DownloadSoapResponseParser>();
+
     services.AddScoped<IDownloadPort, DownloadSoapAdapter>();
     services.AddScoped<DownloadUseCase>();
-
+    
     return services;
   }
 }

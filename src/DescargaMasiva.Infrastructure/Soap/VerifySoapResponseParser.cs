@@ -6,9 +6,9 @@ using DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
 
 namespace DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 
-internal sealed class VerifySoapResponseParser : IVerifySoapResponseParser
+internal sealed class VerifySoapResponseParser : ISoapResponseParser<Result<VerifyData>>
 {
-    public VerifyResult Parse(SoapRequestResult soapRequestResult)
+    public Result<VerifyData> Parse(SoapRequestResult soapRequestResult)
     {
         var xmlDocument = new XmlDocument();
         xmlDocument.LoadXml(soapRequestResult.ResponseContent);
@@ -47,14 +47,14 @@ internal sealed class VerifySoapResponseParser : IVerifySoapResponseParser
                 packageIdsList.Add(idPaqueteElement.InnerText);
         }
 
-        return VerifyResult.CreateInstance(
-            packageIdsList,
-            downloadRequestStatusNumber,
-            downloadRequestStatusCode,
-            numberOfCfdis,
-            requestStatusCode,
-            requestStatusMessage,
-            soapRequestResult.HttpStatusCode,
-            soapRequestResult.ResponseContent);
+        var data = new VerifyData(
+          packageIdsList,
+          downloadRequestStatusNumber,
+          downloadRequestStatusCode,
+          numberOfCfdis,
+          requestStatusCode,
+          requestStatusMessage
+        );
+        return Result<VerifyData>.Success(data);
     }
 }
