@@ -9,9 +9,9 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 /// <summary>
 ///     Resultado de la peticion de verificacion.
 /// </summary>
-public sealed class VerificacionResult
+public sealed class VerifyResult
 {
-  private VerificacionResult(List<string> packageIds,
+  private VerifyResult(List<string> packageIds,
                              string downloadRequestStatusNumber,
                              string downloadRequestStatusCode,
                              string numberOfCfdis,
@@ -74,7 +74,7 @@ public sealed class VerificacionResult
   /// </summary>
   public string ResponseContent { get; }
 
-  public static VerificacionResult CreateInstance(List<string> packageIds,
+  public static VerifyResult CreateInstance(List<string> packageIds,
                                                   string downloadRequestStatusNumber,
                                                   string downloadRequestStatusCode,
                                                   string numberOfCfdis,
@@ -83,7 +83,7 @@ public sealed class VerificacionResult
                                                   HttpStatusCode httpStatusCode,
                                                   string responseContent)
   {
-    return new VerificacionResult(packageIds, 
+    return new VerifyResult(packageIds, 
       downloadRequestStatusNumber,
       downloadRequestStatusCode,
       numberOfCfdis,

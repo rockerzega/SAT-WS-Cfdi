@@ -3,8 +3,9 @@ using System.Net.Mime;
 using System.Text;
 using DescargaMasiva.DescargaMasiva.Domain.Entities;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
+using DescargaMasiva.DescargaMasiva.Infrastructure.Http;
 
-namespace DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
+namespace DescargaMasiva.DescargaMasiva.Infrastructure.Http;
 
 public sealed class HttpSoapClient(HttpClient httpClient) : IHttpSoapClient
 {
@@ -35,7 +36,7 @@ public sealed class HttpSoapClient(HttpClient httpClient) : IHttpSoapClient
     request.Headers.Add("SOAPAction", soapAction);
 
     if (accessToken.IsValid)
-        request.Headers.Add("Authorization", accessToken.HttpAuthorizationHeader);
+      request.Headers.Add("Authorization", accessToken.ToAuthorizationHeader());
 
     request.Content = new StringContent(requestContent, Encoding.UTF8, MediaTypeNames.Text.Xml);
 

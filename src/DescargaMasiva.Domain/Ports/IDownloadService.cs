@@ -1,20 +1,20 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using DescargaMasiva.DescargaMasiva.Domain.Entities;
 
-namespace DescargaMasiva.DescargaMasiva.Application.Interfaces;
+namespace DescargaMasiva.DescargaMasiva.Domain.Ports;
 
     /// <summary>
     ///     Servicio para mandar peticiones de verificacion al web service de descarga masiva de CFDIs del SAT
     /// </summary>
-    public interface IDescargaService
+    public interface IDownloadService
     {
         /// <summary>
         ///     Genera el contenido para la peticion SOAP enviada al web service
         /// </summary>
-        /// <param name="descargaRequest">Peticion</param>
+        /// <param name="downloadRequest">Peticion</param>
         /// <param name="certificate">Certificado del SAT (.pfx)</param>
         /// <returns>El contenido para la peticion SOAP</returns>
-        string GenerateSoapRequestEnvelopeXmlContent(DescargaRequest descargaRequest, X509Certificate2 certificate);
+        string GenerateSoapRequestEnvelopeXmlContent(DownloadRequest downloadRequest, X509Certificate2 certificate);
 
         /// <summary>
         ///     Envia la peticion al web service de descarga masiva de CFDIs del SAT.
@@ -29,11 +29,11 @@ namespace DescargaMasiva.DescargaMasiva.Application.Interfaces;
         /// <summary>
         ///     Envia la peticion al web service de descarga masiva de CFDIs del SAT.
         /// </summary>
-        /// <param name="descargaRequest">Peicion</param>
+        /// <param name="downloadRequest">Peicion</param>
         /// <param name="certificate">Certificado SAT (.pfx)</param>
         /// <param name="cancellationToken">Token de cancelacion</param>
         /// <returns>El resultado de la peticion.</returns>
-        Task<DescargaResult> SendSoapRequestAsync(DescargaRequest descargaRequest,
+        Task<DownloadResult> SendSoapRequestAsync(DownloadRequest downloadRequest,
                                                   X509Certificate2 certificate,
                                                   CancellationToken cancellationToken);
 
@@ -42,6 +42,6 @@ namespace DescargaMasiva.DescargaMasiva.Application.Interfaces;
         /// </summary>
         /// <param name="soapRequestResult">Resultado SOAP</param>
         /// <returns>Resultado de la peticion</returns>
-        DescargaResult GetSoapResponseResult(SoapRequestResult soapRequestResult);
+        DownloadResult GetSoapResponseResult(SoapRequestResult soapRequestResult);
     }
 

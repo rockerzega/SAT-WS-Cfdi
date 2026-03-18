@@ -5,9 +5,9 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 /// <summary>
 ///     Resultado de la peticion de autenticacion.
 /// </summary>
-public sealed class AutenticacionResult
+public sealed class AuthResult
 {
-    private AutenticacionResult(AccessToken accessToken,
+    private AuthResult(AccessToken accessToken,
                                 string faultCode,
                                 string faultString,
                                 HttpStatusCode httpStatusCode,
@@ -39,25 +39,25 @@ public sealed class AutenticacionResult
     /// </summary>
     public string ResponseContent { get; }
 
-    public static AutenticacionResult CreateInstance(AccessToken accessToken,
+    public static AuthResult CreateInstance(AccessToken accessToken,
                                                      string faultCode,
                                                      string faultString,
                                                      HttpStatusCode httpStatusCode,
                                                      string responseContent)
     {
-        return new AutenticacionResult(accessToken, faultCode, faultString, httpStatusCode, responseContent);
+        return new AuthResult(accessToken, faultCode, faultString, httpStatusCode, responseContent);
     }
 
-    public static AutenticacionResult CreateSuccess(AccessToken accessToken, HttpStatusCode httpStatusCode, string responseContent)
+    public static AuthResult CreateSuccess(AccessToken accessToken, HttpStatusCode httpStatusCode, string responseContent)
     {
-        return new AutenticacionResult(accessToken, string.Empty, string.Empty, httpStatusCode, responseContent);
+        return new AuthResult(accessToken, string.Empty, string.Empty, httpStatusCode, responseContent);
     }
 
-    public static AutenticacionResult CreateFailure(string faultCode,
+    public static AuthResult CreateFailure(string faultCode,
                                                     string faultString,
                                                     HttpStatusCode httpStatusCode,
                                                     string responseContent)
     {
-        return new AutenticacionResult(AccessToken.CreateEmpty(), faultCode, faultString, httpStatusCode, responseContent);
+        return new AuthResult(AccessToken.CreateEmpty(), faultCode, faultString, httpStatusCode, responseContent);
     }
 }
