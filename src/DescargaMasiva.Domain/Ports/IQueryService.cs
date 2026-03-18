@@ -34,7 +34,7 @@ public interface IQueryService
   /// <param name="certificate">Certificado SAT (.pfx)</param>
   /// <param name="cancellationToken">Token de cancelacion</param>
   /// <returns>El resultado de la peticion.</returns>
-  Task<QueryResult> SendSoapRequestAsync(QueryRequest queryRequest,
+  Task<Result<QueryData>> SendSoapRequestAsync(QueryRequest queryRequest,
                                              X509Certificate2 certificate,
                                              CancellationToken cancellationToken);
 
@@ -43,5 +43,5 @@ public interface IQueryService
   /// </summary>
   /// <param name="soapRequestResult">Resultado SOAP</param>
   /// <returns>Resultado de la peticion</returns>
-  QueryResult GetSoapResponseResult(SoapRequestResult soapRequestResult);
+  Result<QueryData> GetSoapResponseResult(SoapRequestResult soapRequestResult);
 }

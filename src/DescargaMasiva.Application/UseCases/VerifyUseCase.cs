@@ -3,16 +3,16 @@ using DescargaMasiva.DescargaMasiva.Domain.Ports;
 
 namespace DescargaMasiva.DescargaMasiva.Application.UseCases;
 
-public sealed class VerifyRequestUseCase
+public sealed class VerifyUseCase
 {
   private readonly IVerifyPort _verifyPort;
 
-  public VerifyRequestUseCase(IVerifyPort verifyPort)
+  public VerifyUseCase(IVerifyPort verifyPort)
   {
     _verifyPort = verifyPort;
   }
 
-  public async Task<VerifyResult> ExecuteAsync(
+  public async Task<Result<VerifyData>> ExecuteAsync(
     VerifyRequest request,
     CancellationToken cancellationToken = default)
   {

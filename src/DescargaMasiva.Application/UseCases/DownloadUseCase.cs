@@ -12,7 +12,7 @@ public sealed class DownloadUseCase
     _downloadPort = downloadPort;
   }
 
-  public async Task<DownloadResult> ExecuteAsync(
+  public async Task<Result<DownloadData>> ExecuteAsync(
     DownloadRequest request,
     CancellationToken cancellationToken = default)
   {

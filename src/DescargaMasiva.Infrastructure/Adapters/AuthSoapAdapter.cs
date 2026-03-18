@@ -9,12 +9,12 @@ using DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 namespace DescargaMasiva.DescargaMasiva.Infrastructure.Adapters;
 
 public sealed class AuthSoapAdapter 
-  : BaseSoapAdapter<AuthRequest, AuthResult>, IAuthPort
+  : BaseSoapAdapter<AuthRequest, Result<AccessToken>>, IAuthPort
 {
   public AuthSoapAdapter(
     IHttpSoapClient httpSoapClient,
     ISoapEnvelopeBuilder<AuthRequest> builder,
-    ISoapResponseParser<AuthResult> parser)
+    ISoapResponseParser<Result<AccessToken>> parser)
     : base(
       httpSoapClient,
       builder,
@@ -23,7 +23,7 @@ public sealed class AuthSoapAdapter
   {
   }
 
-  public Task<AuthResult> ExecuteAsync(
+  public Task<Result<AccessToken>> ExecuteAsync(
     AuthRequest request,
     CancellationToken cancellationToken = default)
   {

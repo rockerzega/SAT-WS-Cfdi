@@ -7,12 +7,12 @@ using DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 namespace DescargaMasiva.DescargaMasiva.Infrastructure.Adapters;
 
 public sealed class QuerySoapAdapter 
-  : BaseSoapAdapter<QueryRequest, QueryResult>, IQueryPort
+  : BaseSoapAdapter<QueryRequest, Result<QueryData>>, IQueryPort
 {
   public QuerySoapAdapter(
     IHttpSoapClient httpSoapClient,
     ISoapEnvelopeBuilder<QueryRequest> builder,
-    ISoapResponseParser<QueryResult> parser)
+    ISoapResponseParser<Result<QueryData>> parser)
     : base(
       httpSoapClient,
       builder,
@@ -21,7 +21,7 @@ public sealed class QuerySoapAdapter
   {
   }
 
-  public Task<QueryResult> ExecuteAsync(
+  public Task<Result<QueryData>> ExecuteAsync(
     QueryRequest request,
     CancellationToken cancellationToken = default)
   {

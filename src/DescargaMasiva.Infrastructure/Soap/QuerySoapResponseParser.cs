@@ -5,9 +5,10 @@ using DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
 
 namespace DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 
-internal sealed class QuerySoapResponseParser : ISoapResponseParser<QueryResult>
+internal sealed class QuerySoapResponseParser 
+  : ISoapResponseParser<Result<QueryData>>
 {
-  public QueryResult Parse(SoapRequestResult soapRequestResult)
+  public Result<QueryData> Parse(SoapRequestResult soapRequestResult)
   {
     var xmlDocument = new XmlDocument();
     xmlDocument.LoadXml(soapRequestResult.ResponseContent);
@@ -28,12 +29,10 @@ internal sealed class QuerySoapResponseParser : ISoapResponseParser<QueryResult>
 
     string requestStatusMessage =
       element.Attributes?.GetNamedItem("Mensaje")?.Value ?? string.Empty;
-
-    return QueryResult.CreateInstance(
+    var QueryData = new QueryData(
       requestId,
       requestStatusCode,
-      requestStatusMessage,
-      soapRequestResult.HttpStatusCode,
-      soapRequestResult.ResponseContent);
+      requestStatusMessage);
+    return Result<QueryData>.Success(QueryData);
   }
 }

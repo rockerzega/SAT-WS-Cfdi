@@ -7,12 +7,12 @@ using DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 namespace DescargaMasiva.DescargaMasiva.Infrastructure.Adapters;
 
 public sealed class VerifySoapAdapter
-  : BaseSoapAdapter<VerifyRequest, VerifyResult>, IVerifyPort
+  : BaseSoapAdapter<VerifyRequest, Result<VerifyData>>, IVerifyPort
 {
   public VerifySoapAdapter(
     IHttpSoapClient httpSoapClient,
     ISoapEnvelopeBuilder<VerifyRequest> builder,
-    ISoapResponseParser<VerifyResult> parser)
+    ISoapResponseParser<Result<VerifyData>> parser)
     : base(
       httpSoapClient,
       builder,
@@ -21,7 +21,7 @@ public sealed class VerifySoapAdapter
   {
   }
 
-  public Task<VerifyResult> ExecuteAsync(
+  public Task<Result<VerifyData>> ExecuteAsync(
     VerifyRequest request,
     CancellationToken cancellationToken = default)
   {

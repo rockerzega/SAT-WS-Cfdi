@@ -4,7 +4,7 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Ports;
 
 public interface IDownloadPort
 {
-  Task<DownloadResult> ExecuteAsync(
+  Task<Result<DownloadData>> ExecuteAsync(
     DownloadRequest request,
     CancellationToken cancellationToken = default);
 }

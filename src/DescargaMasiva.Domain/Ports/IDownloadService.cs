@@ -33,7 +33,7 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Ports;
         /// <param name="certificate">Certificado SAT (.pfx)</param>
         /// <param name="cancellationToken">Token de cancelacion</param>
         /// <returns>El resultado de la peticion.</returns>
-        Task<DownloadResult> SendSoapRequestAsync(DownloadRequest downloadRequest,
+        Task<Result<DownloadData>> SendSoapRequestAsync(DownloadRequest downloadRequest,
                                                   X509Certificate2 certificate,
                                                   CancellationToken cancellationToken);
 
@@ -42,6 +42,6 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Ports;
         /// </summary>
         /// <param name="soapRequestResult">Resultado SOAP</param>
         /// <returns>Resultado de la peticion</returns>
-        DownloadResult GetSoapResponseResult(SoapRequestResult soapRequestResult);
+        Result<DownloadData> GetSoapResponseResult(SoapRequestResult soapRequestResult);
     }
 

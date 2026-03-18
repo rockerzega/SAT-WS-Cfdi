@@ -12,7 +12,7 @@ public sealed class QueryUseCase
     _queryPort = queryPort;
   }
 
-  public async Task<QueryResult> ExecuteAsync(
+  public async Task<Result<QueryData>> ExecuteAsync(
     QueryRequest request,
     CancellationToken cancellationToken = default)
   {

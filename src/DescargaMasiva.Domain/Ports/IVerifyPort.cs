@@ -4,7 +4,7 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Ports;
 
 public interface IVerifyPort
 {
-  Task<VerifyResult> ExecuteAsync(
+  Task<Result<VerifyData>> ExecuteAsync(
     VerifyRequest request,
     CancellationToken cancellationToken = default);
 }
