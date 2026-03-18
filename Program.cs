@@ -1,44 +1,84 @@
+using DescargaMasiva.DescargaMasiva.Application.UseCases;
+using DescargaMasiva.DescargaMasiva.Infrastructure.Configuration;
+using DescargaMasiva.DescargaMasiva.Domain.Entities;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDescargaMasiva(options =>
+{
+  options.CertificatePath = "miCertificado.pfx";
+  options.CertificatePassword = "123456";
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
+// =========================
+// AUTH
+// =========================
+app.MapPost("/auth", async (AuthUseCase useCase) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+  var result = await useCase.ExecuteAsync();
+
+  return result.Match(
+    success => Results.Ok(success),
+    (code, message) => Results.BadRequest(new { code, message })
+  );
+});
+
+
+// =========================
+// QUERY
+// =========================
+app.MapPost("/query", async (QueryRequest request, QueryUseCase useCase) =>
+{
+  var result = await useCase.ExecuteAsync(request);
+
+  return result.Match(
+    success => Results.Ok(success),
+    (code, message) => Results.BadRequest(new { code, message })
+  );
+});
+
+
+// =========================
+// VERIFY
+// =========================
+app.MapPost("/verify", async (VerifyRequest request, VerifyUseCase useCase) =>
+{
+  var result = await useCase.ExecuteAsync(request);
+
+  return result.Match(
+    success => Results.Ok(success),
+    (code, message) => Results.BadRequest(new { code, message })
+  );
+});
+
+
+// =========================
+// DOWNLOAD
+// =========================
+app.MapPost("/download", async (DownloadRequest request, DownloadUseCase useCase) =>
+{
+  var result = await useCase.ExecuteAsync(request);
+
+  return result.Match(
+    success => Results.Ok(success),
+    (code, message) => Results.BadRequest(new { code, message })
+  );
+});
+
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

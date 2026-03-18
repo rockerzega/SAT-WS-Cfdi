@@ -5,9 +5,9 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 /// <summary>
 ///     Peticion de descarga.
 /// </summary>
-public sealed class DescargaRequest
+public sealed class DownloadRequest
 {
-  private DescargaRequest(string packageId, string requestingRfc, AccessToken accessToken)
+  private DownloadRequest(string packageId, string requestingRfc, AccessToken accessToken)
   {
     PackageId = packageId ?? throw new ArgumentNullException(nameof(packageId));
     RequestingRfc = requestingRfc ?? throw new ArgumentNullException(nameof(requestingRfc));
@@ -29,8 +29,8 @@ public sealed class DescargaRequest
   /// </summary>
   public AccessToken AccessToken { get; }
 
-  public static DescargaRequest CreateInstace(string packageId, string requestingRfc, AccessToken accessToken)
+  public static DownloadRequest CreateInstace(string packageId, string requestingRfc, AccessToken accessToken)
   {
-    return new DescargaRequest(packageId, requestingRfc, accessToken);
+    return new DownloadRequest(packageId, requestingRfc, accessToken);
   }
 }
