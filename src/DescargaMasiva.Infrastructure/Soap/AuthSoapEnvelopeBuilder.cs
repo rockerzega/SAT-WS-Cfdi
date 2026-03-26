@@ -19,63 +19,63 @@ internal sealed class AuthSoapEnvelopeBuilder: ISoapEnvelopeBuilder<AuthRequest>
   {
     var xmlDocument = new XmlDocument();
 
-    XmlElement envelopElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.S11Prefix,
+    XmlElement envelopElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.SPrefix,
                 "Envelope",
-                CfdiDescargaMasivaNamespaces.S11NamespaceUrl);
-    envelopElement.SetAttribute($"xmlns:{CfdiDescargaMasivaNamespaces.S11Prefix}", CfdiDescargaMasivaNamespaces.S11NamespaceUrl);
-    envelopElement.SetAttribute($"xmlns:{CfdiDescargaMasivaNamespaces.WsuPrefix}", CfdiDescargaMasivaNamespaces.WsuNamespaceUrl);
+                CfdiDescargaMasivaNamespaces.SNamespaceUrl);
+    envelopElement.SetAttribute($"xmlns:{CfdiDescargaMasivaNamespaces.SPrefix}", CfdiDescargaMasivaNamespaces.SNamespaceUrl);
+    envelopElement.SetAttribute($"xmlns:{CfdiDescargaMasivaNamespaces.UPrefix}", CfdiDescargaMasivaNamespaces.UNamespaceUrl);
     xmlDocument.AppendChild(envelopElement);
 
-    XmlElement headerElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.S11Prefix,
+    XmlElement headerElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.SPrefix,
         "Header",
-        CfdiDescargaMasivaNamespaces.S11NamespaceUrl);
+        CfdiDescargaMasivaNamespaces.SNamespaceUrl);
     envelopElement.AppendChild(headerElement);
 
-    XmlElement securityElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.WssePrefix,
+    XmlElement securityElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.OPrefix,
         "Security",
-        CfdiDescargaMasivaNamespaces.WsseNamespaceUrl);
-    securityElement.SetAttribute("mustUnderstand", CfdiDescargaMasivaNamespaces.S11NamespaceUrl, "1");
+        CfdiDescargaMasivaNamespaces.ONamespaceUrl);
+    securityElement.SetAttribute("mustUnderstand", CfdiDescargaMasivaNamespaces.SNamespaceUrl, "1");
     headerElement.AppendChild(securityElement);
 
-    XmlElement timestampElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.WsuPrefix,
+    XmlElement timestampElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.UPrefix,
         "Timestamp",
-        CfdiDescargaMasivaNamespaces.WsuNamespaceUrl);
-    timestampElement.SetAttribute("Id", CfdiDescargaMasivaNamespaces.WsuNamespaceUrl, "_0");
+        CfdiDescargaMasivaNamespaces.UNamespaceUrl);
+    timestampElement.SetAttribute("Id", CfdiDescargaMasivaNamespaces.UNamespaceUrl, "_0"); // Probar con _0 si falla
     securityElement.AppendChild(timestampElement);
 
-    XmlElement createdElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.WsuPrefix,
+    XmlElement createdElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.UPrefix,
         "Created",
-        CfdiDescargaMasivaNamespaces.WsuNamespaceUrl);
+        CfdiDescargaMasivaNamespaces.UNamespaceUrl);
     createdElement.InnerText = authRequest.TokenCreatedDateUtc.ToSoapSecurityTimestampString();
     timestampElement.AppendChild(createdElement);
 
-    XmlElement expiresElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.WsuPrefix,
+    XmlElement expiresElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.UPrefix,
         "Expires",
-        CfdiDescargaMasivaNamespaces.WsuNamespaceUrl);
+        CfdiDescargaMasivaNamespaces.UNamespaceUrl);
     expiresElement.InnerText = authRequest.TokenExpiresDateUtc.ToSoapSecurityTimestampString();
     timestampElement.AppendChild(expiresElement);
 
-    XmlElement binarySecurityTokenElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.WssePrefix,
+    XmlElement binarySecurityTokenElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.OPrefix,
         "BinarySecurityToken",
-        CfdiDescargaMasivaNamespaces.WsseNamespaceUrl);
+        CfdiDescargaMasivaNamespaces.ONamespaceUrl);
     binarySecurityTokenElement.SetAttribute("Id",
-        CfdiDescargaMasivaNamespaces.WsuNamespaceUrl,
+        CfdiDescargaMasivaNamespaces.UNamespaceUrl,
         authRequest.Uuid.ToBinarySecurityTokenId());
     binarySecurityTokenElement.SetAttribute("ValueType",
-        "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
+        $"{CfdiDescargaMasivaNamespaces.BaseUrl}x509-token-profile-1.0#X509v3");
     binarySecurityTokenElement.SetAttribute("EncodingType",
-        "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary");
+        $"{CfdiDescargaMasivaNamespaces.BaseUrl}soap-message-security-1.0#Base64Binary");
     binarySecurityTokenElement.InnerText =
       _signer.GetCertificateBase64();
 
     securityElement.AppendChild(binarySecurityTokenElement);
 
-    XmlElement securityTokenReferenceElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.WssePrefix,
+    XmlElement securityTokenReferenceElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.OPrefix,
         "SecurityTokenReference",
-        CfdiDescargaMasivaNamespaces.WsseNamespaceUrl);
-    XmlElement securityTokenReferenceReferenceElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.WssePrefix,
+        CfdiDescargaMasivaNamespaces.ONamespaceUrl);
+    XmlElement securityTokenReferenceReferenceElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.OPrefix,
         "Reference",
-        CfdiDescargaMasivaNamespaces.WsseNamespaceUrl);
+        CfdiDescargaMasivaNamespaces.ONamespaceUrl);
     XmlAttribute valueType = xmlDocument.CreateAttribute("ValueType");
     valueType.Value = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
     securityTokenReferenceReferenceElement.Attributes.Append(valueType);
@@ -91,15 +91,15 @@ internal sealed class AuthSoapEnvelopeBuilder: ISoapEnvelopeBuilder<AuthRequest>
         securityTokenReferenceElement);
     securityElement.AppendChild(signatureElement);
 
-    XmlElement bodyElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.S11Prefix,
+    XmlElement bodyElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.SPrefix,
         "Body",
-        CfdiDescargaMasivaNamespaces.S11NamespaceUrl);
-    envelopElement.AppendChild(bodyElement);
+        CfdiDescargaMasivaNamespaces.SNamespaceUrl);
+    
 
     XmlElement autenticaElement = xmlDocument.CreateElement("Autentica");
     autenticaElement.SetAttribute("xmlns", "http://DescargaMasivaTerceros.gob.mx");
     bodyElement.AppendChild(autenticaElement);
-
+    envelopElement.AppendChild(bodyElement);
     return xmlDocument.OuterXml;
   }
 }

@@ -20,22 +20,22 @@ internal sealed class QuerySoapEnvelopeBuilder : ISoapEnvelopeBuilder<QueryReque
   {
     var xmlDocument = new XmlDocument();
 
-    XmlElement envelopElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.S11Prefix,
+    XmlElement envelopElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.SPrefix,
       "Envelope",
-      CfdiDescargaMasivaNamespaces.S11NamespaceUrl);
-    envelopElement.SetAttribute($"xmlns:{CfdiDescargaMasivaNamespaces.S11Prefix}", CfdiDescargaMasivaNamespaces.S11NamespaceUrl);
+      CfdiDescargaMasivaNamespaces.SNamespaceUrl);
+    envelopElement.SetAttribute($"xmlns:{CfdiDescargaMasivaNamespaces.SPrefix}", CfdiDescargaMasivaNamespaces.SNamespaceUrl);
     envelopElement.SetAttribute($"xmlns:{CfdiDescargaMasivaNamespaces.DesPrefix}", CfdiDescargaMasivaNamespaces.DesNamespaceUrl);
     envelopElement.SetAttribute($"xmlns:{CfdiDescargaMasivaNamespaces.DsPrefix}", CfdiDescargaMasivaNamespaces.DsNamespaceUrl);
     xmlDocument.AppendChild(envelopElement);
 
-    XmlElement headerElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.S11Prefix,
+    XmlElement headerElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.SPrefix,
       "Header",
-      CfdiDescargaMasivaNamespaces.S11NamespaceUrl);
+      CfdiDescargaMasivaNamespaces.SNamespaceUrl);
     envelopElement.AppendChild(headerElement);
 
-    XmlElement bodyElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.S11Prefix,
+    XmlElement bodyElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.SPrefix,
       "Body",
-      CfdiDescargaMasivaNamespaces.S11NamespaceUrl);
+      CfdiDescargaMasivaNamespaces.SNamespaceUrl);
     envelopElement.AppendChild(bodyElement);
 
     XmlElement solicitaDescargaElement = xmlDocument.CreateElement(CfdiDescargaMasivaNamespaces.DesPrefix,

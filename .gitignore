@@ -32,7 +32,7 @@ packages/
 # TestResults/
 
 # Archivos de configuración de entorno (ej. variables de entorno)
-# .env
+.env
 
 # Archivos de Azure/Docker (si no son necesarios versionar)
 # Dockerfile
@@ -46,3 +46,7 @@ packages/
 *.dll
 *.exe
 *.pdb
+
+# archivos valiosos
+*.pfx
+

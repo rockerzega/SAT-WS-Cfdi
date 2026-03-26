@@ -21,9 +21,9 @@ internal sealed class SignedXmlWithId : SignedXml
     if (idElem is null)
     {
       var nsManager = new XmlNamespaceManager(doc.NameTable);
-      nsManager.AddNamespace(CfdiDescargaMasivaNamespaces.WsuPrefix, CfdiDescargaMasivaNamespaces.WsuNamespaceUrl);
+      nsManager.AddNamespace(CfdiDescargaMasivaNamespaces.UPrefix, CfdiDescargaMasivaNamespaces.UNamespaceUrl);
 
-      idElem = doc.SelectSingleNode("//*[@wsu:Id=\"" + id + "\"]", nsManager) as XmlElement;
+      idElem = doc.SelectSingleNode("//*[@u:Id=\"" + id + "\"]", nsManager) as XmlElement;
     }
 
     return idElem;

@@ -5,6 +5,7 @@ using DescargaMasiva.DescargaMasiva.Domain.Ports;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Adapters;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Http;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
+using DescargaMasiva.DescargaMasiva.Infrastructure.Security;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 
 namespace DescargaMasiva.DescargaMasiva.Infrastructure.Configuration;
@@ -25,6 +26,9 @@ public static class ServiceCollectionExtensions
         options.CertificatePassword,
         X509KeyStorageFlags.MachineKeySet |
         X509KeyStorageFlags.Exportable));
+
+    // Registrar el signer que usa el certificado para firmar requests.
+    services.AddScoped<IAuthRequestSigner, X509AuthRequestSigner>();
 
     // 2️⃣ Registrar HttpSoapClient
     services.AddHttpClient<IHttpSoapClient, HttpSoapClient>();
