@@ -11,7 +11,9 @@ internal sealed class AuthSoapResponseParser
   {
     var xmlDocument = new XmlDocument();
     xmlDocument.LoadXml(soapRequestResult.ResponseContent);
-
+    Console.WriteLine("--------------------------------------------------------------------------");
+    Console.WriteLine(xmlDocument.OuterXml);
+    Console.WriteLine("--------------------------------------------------------------------------");
     XmlNode autenticaResultElement =
       xmlDocument.GetElementsByTagName("AutenticaResult")[0];
 
@@ -19,7 +21,6 @@ internal sealed class AuthSoapResponseParser
     {
       var token =
         AccessToken.CreateInstance(autenticaResultElement.InnerXml);
-
       return Result<AccessToken>.Success(token);
     }
 

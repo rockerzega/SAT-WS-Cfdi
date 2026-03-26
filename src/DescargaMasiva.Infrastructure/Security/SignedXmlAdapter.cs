@@ -13,7 +13,7 @@ public class SignedXmlAdapter : IXmlRequestSigner
 
     var signedXml = new SignedXml(xml)
     {
-      SigningKey = cert.GetRSAPrivateKey()
+      SigningKey = SignedXmlHelper.GetSigningKeyForRsaSha1XmlDsig(cert)
     };
 
     signedXml.SignedInfo.SignatureMethod = SignedXml.XmlDsigRSASHA1Url;
@@ -49,7 +49,7 @@ public class SignedXmlAdapter : IXmlRequestSigner
 
     var signedXml = new SignedXmlWithId(xml)
     {
-      SigningKey = cert.GetRSAPrivateKey()
+      SigningKey = SignedXmlHelper.GetSigningKeyForRsaSha1XmlDsig(cert)
     };
 
     signedXml.SignedInfo.SignatureMethod = SignedXml.XmlDsigRSASHA1Url;
