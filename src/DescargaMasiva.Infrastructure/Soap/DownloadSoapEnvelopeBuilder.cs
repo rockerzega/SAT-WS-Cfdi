@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using DescargaMasiva.DescargaMasiva.Domain.Constants;
@@ -9,16 +10,58 @@ namespace DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 
 internal sealed class DownloadSoapEnvelopeBuilder : ISoapEnvelopeBuilder<DownloadRequest>
 {
-  private readonly X509Certificate2 _certificate;
+  private readonly X509Certificate2? _defaultCertificate;
 
-    public DownloadSoapEnvelopeBuilder(X509Certificate2 certificate)
+  public DownloadSoapEnvelopeBuilder(X509Certificate2? defaultCertificate)
+  {
+    _defaultCertificate = defaultCertificate;
+  }
+
+  public string Build(DownloadRequest downloadRequest)
+  {
+    if (downloadRequest.HasInlineSigningPfx)
     {
-        _certificate = certificate;
+      using var inlineCert = LoadPfxFromRequest(downloadRequest);
+      return BuildEnvelope(downloadRequest, inlineCert);
     }
 
-    public string Build(DownloadRequest downloadRequest)
+    if (_defaultCertificate is null)
     {
-        var xmlDocument = new XmlDocument();
+      throw new InvalidOperationException(
+        "No hay certificado para firmar: configura DescargaMasiva:CertificatePath o envía \"certificate\" (Base64 del .pfx) y \"password\" en el JSON.");
+    }
+
+    return BuildEnvelope(downloadRequest, _defaultCertificate);
+  }
+
+  private static X509Certificate2 LoadPfxFromRequest(DownloadRequest downloadRequest)
+  {
+    byte[] pfxBytes;
+    try
+    {
+      pfxBytes = Convert.FromBase64String(downloadRequest.Certificate!.Trim());
+    }
+    catch (FormatException ex)
+    {
+      throw new CryptographicException("El campo certificate no es Base64 válido.", ex);
+    }
+
+    try
+    {
+      return new X509Certificate2(
+        pfxBytes,
+        downloadRequest.Password ?? string.Empty,
+        X509KeyStorageFlags.EphemeralKeySet | X509KeyStorageFlags.Exportable);
+    }
+    catch (Exception ex)
+    {
+      throw new CryptographicException("No se pudo cargar el .pfx con la contraseña indicada.", ex);
+    }
+  }
+
+  private static string BuildEnvelope(DownloadRequest downloadRequest, X509Certificate2 certificate)
+  {
+    var xmlDocument = new XmlDocument();
 
         XmlElement envelopElement = xmlDocument.CreateElement(
             CfdiDescargaMasivaNamespaces.SPrefix,
@@ -60,7 +103,7 @@ internal sealed class DownloadSoapEnvelopeBuilder : ISoapEnvelopeBuilder<Downloa
         peticionDescargaElement.SetAttribute("IdPaquete", downloadRequest.PackageId);
         peticionDescargaElement.SetAttribute("RfcSolicitante", downloadRequest.RequestingRfc);
 
-        XmlElement signatureElement = SignedXmlHelper.SignRequest(peticionDescargaElement, _certificate);
+        XmlElement signatureElement = SignedXmlHelper.SignRequest(peticionDescargaElement, certificate);
         peticionDescargaElement.AppendChild(signatureElement);
 
         entradaElement.AppendChild(peticionDescargaElement);

@@ -6,10 +6,10 @@ using DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 
 namespace DescargaMasiva.DescargaMasiva.Infrastructure.Adapters;
 
-public sealed class QuerySoapAdapter 
+public sealed class QueryIssuedSoapAdapter 
   : BaseSoapAdapter<QueryRequest, Result<QueryData>>, IQueryPort
 {
-  public QuerySoapAdapter(
+  public QueryIssuedSoapAdapter(
     IHttpSoapClient httpSoapClient,
     ISoapEnvelopeBuilder<QueryRequest> builder,
     ISoapResponseParser<Result<QueryData>> parser)

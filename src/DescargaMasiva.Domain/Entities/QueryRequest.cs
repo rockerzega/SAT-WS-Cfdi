@@ -1,4 +1,4 @@
-﻿using DescargaMasiva.DescargaMasiva.Domain.Enums;
+using DescargaMasiva.DescargaMasiva.Domain.Enums;
 
 namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 
@@ -7,18 +7,20 @@ namespace DescargaMasiva.DescargaMasiva.Domain.Entities;
 /// </summary>
 public sealed class QueryRequest
 {
-    private QueryRequest(DateTime startDate,
+    public QueryRequest(DateTime startDate,
                              DateTime endDate,
                              QueryType requestType,
-                             string senderRfc,
-                             IEnumerable<string> recipientsRfcs,
+                             string? senderRfc,
+                             IEnumerable<string>? recipientsRfcs,
                              string requestingRfc,
                              AccessToken accessToken,
-                             TypeCfdi documentType,
+                             TypeCfdi? documentType,
                              StatusCfdi documentStatus,
-                             string thirdPartyRfc,
-                             string complement,
-                             string uuid)
+                             string? thirdPartyRfc,
+                             string? complement,
+                             string? uuid,
+                             string? certificate = null,
+                             string? password = null)
     {
         StartDate = startDate;
         EndDate = endDate;
@@ -32,6 +34,8 @@ public sealed class QueryRequest
         ThirdPartyRfc = thirdPartyRfc ?? throw new ArgumentNullException(nameof(thirdPartyRfc));
         Complement = complement ?? throw new ArgumentNullException(nameof(complement));
         Uuid = uuid ?? throw new ArgumentNullException(nameof(uuid));
+        Certificate = certificate;
+        Password = password;
     }
 
     /// <summary>
@@ -114,11 +118,24 @@ public sealed class QueryRequest
     /// </summary>
   public string Uuid { get; }
 
+  /// <summary>
+  ///     Contenido del .pfx en Base64 (opcional, JSON: "certificate"). Si se envía, se usa para firmar en lugar del certificado de configuración.
+  /// </summary>
+  public string? Certificate { get; }
+
+  /// <summary>
+  ///     Contraseña del .pfx (JSON: "password"; puede ser vacía si el PFX no tiene clave).
+  /// </summary>
+  public string? Password { get; }
+
+  public bool HasInlineSigningPfx => !string.IsNullOrWhiteSpace(Certificate);
+
   public bool HasDocumentType => DocumentType != TypeCfdi.Null;
   public bool HasDocumentStatus => DocumentStatus != StatusCfdi.Null;
   public bool HasComplement => !string.IsNullOrWhiteSpace(Complement);
   public bool HasUuid => !string.IsNullOrWhiteSpace(Uuid);
   public bool HasThirdPartyRfc => !string.IsNullOrWhiteSpace(ThirdPartyRfc);
+  public bool HasSenderRfc => !string.IsNullOrWhiteSpace(SenderRfc);
 
   public static QueryRequest CreateInstance(DateTime startDate,
                                                 DateTime endDate,
@@ -149,7 +166,9 @@ public sealed class QueryRequest
       documentStatus,
       thirdPartyRfc,
       complement,
-      uuid
+      uuid,
+      null,
+      null
     );
   }
 
@@ -177,7 +196,9 @@ public sealed class QueryRequest
       StatusCfdi.Null,
       string.Empty,
       string.Empty,
-      string.Empty
+      string.Empty,
+      null,
+      null
     );
   }
 
@@ -194,7 +215,9 @@ public sealed class QueryRequest
       StatusCfdi.Null,
       string.Empty,
       string.Empty,
-      uuid
+      uuid,
+      null,
+      null
     );
   }
 }

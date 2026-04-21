@@ -5,16 +5,18 @@ using DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
 
 namespace DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 
-internal sealed class QuerySoapResponseParser 
+internal sealed class QueryIssuedSoapResponseParser 
   : ISoapResponseParser<Result<QueryData>>
 {
   public Result<QueryData> Parse(SoapRequestResult soapRequestResult)
   {
     var xmlDocument = new XmlDocument();
     xmlDocument.LoadXml(soapRequestResult.ResponseContent);
-
+    Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    Console.WriteLine(xmlDocument.OuterXml);
+    Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     XmlNode element =
-      xmlDocument.GetElementsByTagName("SolicitaDescargaResult")[0];
+      xmlDocument.GetElementsByTagName("SolicitaDescargaEmitidosResult")[0];
 
     if (element is null)
       throw new InvalidResponseContentException(

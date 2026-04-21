@@ -18,6 +18,11 @@ public sealed class StatusCfdi : SmartEnum<StatusCfdi>
   ///     Vigente = 1
   /// </summary>
   public static readonly StatusCfdi Vigente = new StatusCfdi("Vigente", 1);
+  
+  /// <summary>
+  ///     Todos = 2
+  /// </summary>
+  public static readonly StatusCfdi Todos = new StatusCfdi("Todos", 2);
 
   private StatusCfdi(string name, int value) : base(name, value)
   {

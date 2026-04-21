@@ -1,24 +1,36 @@
+using Ardalis.SmartEnum.SystemTextJson;
 using DescargaMasiva.DescargaMasiva.Application.UseCases;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using DescargaMasiva.DescargaMasiva.Domain.Entities;
+using DescargaMasiva.DescargaMasiva.Domain.Enums;
 using DescargaMasiva.DescargaMasiva.Domain.Ports;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Adapters;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Ports;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Security;
 using DescargaMasiva.DescargaMasiva.Infrastructure.Soap;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography.X509Certificates;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.ConfigureHttpJsonOptions(o =>
+{
+  o.SerializerOptions.Converters.Add(new SmartEnumNameConverter<QueryType, int>());
+  o.SerializerOptions.Converters.Add(new SmartEnumValueConverter<TypeCfdi, string>());
+  o.SerializerOptions.Converters.Add(new SmartEnumNameConverter<StatusCfdi, int>());
+});
+
 builder.Services.AddDescargaMasiva(options =>
 {
-  options.CertificatePath = "";
-  options.CertificatePassword = "";
+  var section = builder.Configuration.GetSection("DescargaMasiva");
+  options.CertificatePath = section["CertificatePath"] ?? string.Empty;
+  options.CertificatePassword = section["CertificatePassword"] ?? string.Empty;
 });
 
 var app = builder.Build();
@@ -98,28 +110,67 @@ app.MapPost("/auth-file", async (
 // =========================
 // QUERY
 // =========================
-app.MapPost("/query", async (QueryRequest request, QueryUseCase useCase) =>
+app.MapPost("/query-issued", async (QueryRequest request, [FromKeyedServices(QueryPortKeys.Issued)] QueryUseCase useCase) =>
 {
-  var result = await useCase.ExecuteAsync(request);
+  try
+  {
+    var result = await useCase.ExecuteAsync(request);
 
-  return result.Match(
-    success => Results.Ok(success),
-    (code, message) => Results.BadRequest(new { code, message })
-  );
+    return result.Match(
+      success => Results.Ok(success),
+      (code, message) => Results.BadRequest(new { code, message }));
+  }
+  catch (CryptographicException ex)
+  {
+    return Results.BadRequest(new { code = "SIGNING_CERT_ERROR", message = ex.Message });
+  }
+  catch (InvalidOperationException ex)
+  {
+    return Results.BadRequest(new { code = "SIGNING_CERT_CONFIG", message = ex.Message });
+  }
 });
 
+app.MapPost("/query-received", async (QueryRequest request, [FromKeyedServices(QueryPortKeys.Received)] QueryUseCase useCase) =>
+{
+  try
+  {
+    var result = await useCase.ExecuteAsync(request);
+
+    return result.Match(
+      success => Results.Ok(success),
+      (code, message) => Results.BadRequest(new { code, message }));
+  }
+  catch (CryptographicException ex)
+  {
+    return Results.BadRequest(new { code = "SIGNING_CERT_ERROR", message = ex.Message });
+  }
+  catch (InvalidOperationException ex)
+  {
+    return Results.BadRequest(new { code = "SIGNING_CERT_CONFIG", message = ex.Message });
+  }
+});
 
 // =========================
 // VERIFY
 // =========================
 app.MapPost("/verify", async (VerifyRequest request, VerifyUseCase useCase) =>
 {
-  var result = await useCase.ExecuteAsync(request);
+  try
+  {
+    var result = await useCase.ExecuteAsync(request);
 
-  return result.Match(
-    success => Results.Ok(success),
-    (code, message) => Results.BadRequest(new { code, message })
-  );
+    return result.Match(
+      success => Results.Ok(success),
+      (code, message) => Results.BadRequest(new { code, message }));
+  }
+  catch (CryptographicException ex)
+  {
+    return Results.BadRequest(new { code = "SIGNING_CERT_ERROR", message = ex.Message });
+  }
+  catch (InvalidOperationException ex)
+  {
+    return Results.BadRequest(new { code = "SIGNING_CERT_CONFIG", message = ex.Message });
+  }
 });
 
 
@@ -128,12 +179,22 @@ app.MapPost("/verify", async (VerifyRequest request, VerifyUseCase useCase) =>
 // =========================
 app.MapPost("/download", async (DownloadRequest request, DownloadUseCase useCase) =>
 {
-  var result = await useCase.ExecuteAsync(request);
+  try
+  {
+    var result = await useCase.ExecuteAsync(request);
 
-  return result.Match(
-    success => Results.Ok(success),
-    (code, message) => Results.BadRequest(new { code, message })
-  );
+    return result.Match(
+      success => Results.Ok(success),
+      (code, message) => Results.BadRequest(new { code, message }));
+  }
+  catch (CryptographicException ex)
+  {
+    return Results.BadRequest(new { code = "SIGNING_CERT_ERROR", message = ex.Message });
+  }
+  catch (InvalidOperationException ex)
+  {
+    return Results.BadRequest(new { code = "SIGNING_CERT_CONFIG", message = ex.Message });
+  }
 });
 
 

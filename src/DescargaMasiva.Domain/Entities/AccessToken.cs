@@ -5,7 +5,7 @@
 /// </summary>
 public sealed class AccessToken
 {
-  private AccessToken(string value)
+  public AccessToken(string value)
   {
     Value = value ?? throw new ArgumentNullException(nameof(value));
   }

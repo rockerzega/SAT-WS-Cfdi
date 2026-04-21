@@ -1,4 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
+using System.IO;
+using Microsoft.Extensions.DependencyInjection;
 using DescargaMasiva.DescargaMasiva.Application.UseCases;
 using DescargaMasiva.DescargaMasiva.Domain.Entities;
 using DescargaMasiva.DescargaMasiva.Domain.Ports;
@@ -19,13 +21,10 @@ public static class ServiceCollectionExtensions
     var options = new DescargaMasivaOptions();
     configure(options);
 
-    // 1️⃣ Registrar certificado como Singleton
-    services.AddSingleton(provider =>
-      new X509Certificate2(
-        options.CertificatePath,
-        options.CertificatePassword,
-        X509KeyStorageFlags.MachineKeySet |
-        X509KeyStorageFlags.Exportable));
+    // 1️⃣ Certificado por archivo (opcional si /query, /verify o /download envían PFX en JSON). Auth sigue exigiendo archivo configurado.
+    var certHolder = new ApplicationCertificateHolder(options);
+    services.AddSingleton(certHolder);
+    services.AddSingleton(sp => sp.GetRequiredService<ApplicationCertificateHolder>().GetRequiredCertificate());
 
     // Registrar el signer que usa el certificado para firmar requests.
     services.AddScoped<IAuthRequestSigner, X509AuthRequestSigner>();
@@ -49,27 +48,39 @@ public static class ServiceCollectionExtensions
     services.AddScoped<AuthUseCase>();
 
     // =========================
-    // QUERY
-    // =========================    
-    
-    services.AddScoped<
-      ISoapEnvelopeBuilder<QueryRequest>,
-      QuerySoapEnvelopeBuilder>();
+    // QUERY (emitidos vs recibidos comparten tipos; el último AddScoped<IQueryPort> reemplaza al anterior)
+    // =========================
 
-    services.AddScoped<
-      ISoapResponseParser<Result<QueryData>>,
-      QuerySoapResponseParser>();
+    services.AddKeyedScoped<IQueryPort>(QueryPortKeys.Issued, (sp, _) =>
+    {
+      var holder = sp.GetRequiredService<ApplicationCertificateHolder>();
+      return new QueryIssuedSoapAdapter(
+        sp.GetRequiredService<IHttpSoapClient>(),
+        new QueryIssuedSoapEnvelopeBuilder(holder.DefaultCertificate),
+        new QueryIssuedSoapResponseParser());
+    });
 
-    services.AddScoped<IQueryPort, QuerySoapAdapter>();
-    services.AddScoped<QueryUseCase>();
+    services.AddKeyedScoped<IQueryPort>(QueryPortKeys.Received, (sp, _) =>
+    {
+      var holder = sp.GetRequiredService<ApplicationCertificateHolder>();
+      return new QueryReceivedSoapAdapter(
+        sp.GetRequiredService<IHttpSoapClient>(),
+        new QueryReceivedSoapEnvelopeBuilder(holder.DefaultCertificate),
+        new QueryReceivedSoapResponseParser());
+    });
+
+    services.AddKeyedScoped<QueryUseCase>(QueryPortKeys.Issued, (sp, _) =>
+      new QueryUseCase(sp.GetRequiredKeyedService<IQueryPort>(QueryPortKeys.Issued)));
+
+    services.AddKeyedScoped<QueryUseCase>(QueryPortKeys.Received, (sp, _) =>
+      new QueryUseCase(sp.GetRequiredKeyedService<IQueryPort>(QueryPortKeys.Received)));
     
     // =========================
     // VERIFY
     // =========================    
     
-    services.AddScoped<
-      ISoapEnvelopeBuilder<VerifyRequest>,
-      VerifySoapEnvelopeBuilder>();
+    services.AddScoped<ISoapEnvelopeBuilder<VerifyRequest>>(sp =>
+      new VerifySoapEnvelopeBuilder(sp.GetRequiredService<ApplicationCertificateHolder>().DefaultCertificate));
 
     services.AddScoped<
       ISoapResponseParser<Result<VerifyData>>,
@@ -82,9 +93,8 @@ public static class ServiceCollectionExtensions
     // DOWNLOAD
     // =========================
 
-    services.AddScoped<
-      ISoapEnvelopeBuilder<DownloadRequest>,
-      DownloadSoapEnvelopeBuilder>();
+    services.AddScoped<ISoapEnvelopeBuilder<DownloadRequest>>(sp =>
+      new DownloadSoapEnvelopeBuilder(sp.GetRequiredService<ApplicationCertificateHolder>().DefaultCertificate));
 
     services.AddScoped<
       ISoapResponseParser<Result<DownloadData>>,
@@ -94,5 +104,40 @@ public static class ServiceCollectionExtensions
     services.AddScoped<DownloadUseCase>();
     
     return services;
+  }
+
+  private static X509Certificate2? TryLoadCertificateFromOptions(DescargaMasivaOptions options)
+  {
+    if (string.IsNullOrWhiteSpace(options.CertificatePath))
+      return null;
+
+    if (!File.Exists(options.CertificatePath))
+    {
+      throw new FileNotFoundException(
+        "No se encontró el certificado (.pfx) en la ruta configurada.",
+        options.CertificatePath);
+    }
+
+    return new X509Certificate2(
+      options.CertificatePath,
+      options.CertificatePassword,
+      X509KeyStorageFlags.EphemeralKeySet | X509KeyStorageFlags.Exportable);
+  }
+
+  private sealed class ApplicationCertificateHolder
+  {
+    private readonly Lazy<X509Certificate2?> _lazy;
+
+    public ApplicationCertificateHolder(DescargaMasivaOptions options)
+    {
+      _lazy = new Lazy<X509Certificate2?>(() => TryLoadCertificateFromOptions(options));
+    }
+
+    public X509Certificate2? DefaultCertificate => _lazy.Value;
+
+    public X509Certificate2 GetRequiredCertificate() =>
+      DefaultCertificate ?? throw new InvalidOperationException(
+        "DescargaMasiva:CertificatePath no está configurado. " +
+        "Define la ruta absoluta a tu .pfx en appsettings (sección DescargaMasiva), variable de entorno o User Secrets.");
   }
 }
