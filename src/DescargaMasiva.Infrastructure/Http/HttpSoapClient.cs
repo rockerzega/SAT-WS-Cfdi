@@ -39,7 +39,8 @@ public sealed class HttpSoapClient(HttpClient httpClient) : IHttpSoapClient
       request.Headers.Add("Authorization", accessToken.ToAuthorizationHeader());
 
     request.Content = new StringContent(requestContent, Encoding.UTF8, MediaTypeNames.Text.Xml);
-
+    Console.WriteLine("Request : " + request.ToString());
+    Console.WriteLine("Cancellation token : " + cancellationToken);
     HttpResponseMessage response = await httpClient.SendAsync(request, cancellationToken);
 
     return SoapRequestResult.CreateInstance(response.StatusCode, await response.Content.ReadAsStringAsync());

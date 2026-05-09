@@ -95,7 +95,10 @@ internal sealed class VerifySoapEnvelopeBuilder : ISoapEnvelopeBuilder<VerifyReq
     XmlElement signatureElement = SignedXmlHelper.SignRequest(solicitudElement, certificate);
     solicitudElement.AppendChild(signatureElement);
     verificaSolicitudDescargaElement.AppendChild(solicitudElement);
-
+    Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    Console.WriteLine("XML de salida verify");
+    Console.WriteLine(xmlDocument.OuterXml);
+    Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     return xmlDocument.OuterXml;
   }
 }

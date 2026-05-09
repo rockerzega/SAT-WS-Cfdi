@@ -145,8 +145,10 @@ internal sealed class QueryIssuedSoapEnvelopeBuilder : ISoapEnvelopeBuilder<Quer
     XmlElement signatureElement = SignedXmlHelper.SignRequest(solicitudElement, certificate);
     solicitudElement.AppendChild(signatureElement);
     solicitaDescargaElement.AppendChild(solicitudElement);
-    Console.WriteLine("XML de salida");
+    Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    Console.WriteLine("XML de salida Consulta ");
     Console.WriteLine(xmlDocument.OuterXml);
+    Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     return xmlDocument.OuterXml;
   }
 }

@@ -31,10 +31,4 @@ public sealed class AuthSoapAdapter
       request,
       AccessToken.CreateEmpty(),
       cancellationToken);
-  }
-
-  public Task<AuthResult> AuthenticateAsync(AuthRequest request, CancellationToken cancellationToken = default)
-  {
-    throw new NotImplementedException();
-  }
 }
